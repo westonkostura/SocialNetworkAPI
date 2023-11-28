@@ -26,4 +26,4 @@ The Social Network API is a tool to build a back-end for a social network web ap
 The Social Network API allows users to create, update, and delete users, thoughts, and reactions. Users can also add and remove friends from their friend list.
 
 ## Credits
-This project was coded with help from Copilot and the ASU folders.
+This project was coded with help from Copilot and the ASU folders. 
