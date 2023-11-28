@@ -1,22 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-
-// Import routes
-const indexRoutes = require('./index');
+const routes = require('./routes');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/socialnetwork', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
-
-// Middleware for body-parser
-app.use(bodyParser.json());
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialnetwork', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB Connected...'))
+.catch(err => console.log(err));
+// Middleware for parsing JSON and urlencoded form data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Use Routes
-app.use('/', indexRoutes);
+app.use('/api/', routes);
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

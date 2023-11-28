@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const Thought = require('../models/Thought');
-const User = require('../models/User');
+const Thought = require('../../Models/Thought');
+const User = require('../../Models/User');
 
 // GET all thoughts
 router.get('/', async (req, res) => {
@@ -45,11 +45,15 @@ router.post('/:thoughtId/reactions', async (req, res) => {
 // DELETE remove reaction from thought
 router.delete('/:thoughtId/reactions/:reactionId', async (req, res) => {
     const thought = await Thought.findById(req.params.thoughtId);
-    const reactionIndex = thought.reactions.findIndex(reaction => reaction.reactionId.toString() === req.params.reactionId);
-    if (reactionIndex !== -1) {
-        thought.reactions.splice(reactionIndex, 1);
-        await thought.save();
+    if (!thought) {
+        return res.status(404).json({ message: 'No thought found with this id!' });
     }
+    const reactionIndex = thought.reactions.findIndex(reaction => reaction.reactionId.toString() === req.params.reactionId);
+    if (reactionIndex === -1) {
+        return res.status(404).json({ message: 'No reaction found with this id!' });
+    }
+    thought.reactions.splice(reactionIndex, 1);
+    await thought.save();
     res.json(thought);
 });
 
